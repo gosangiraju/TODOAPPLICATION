@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos</title>
+</head>
+<body>
+    <h1>Todos</h1>
+    <button onclick="location.href='/toDoAddPage.html';">Add Todo</button> <!-- Add Todo button -->
+
+    <table id="todos-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody id="todos-body">
+            <!-- Todos will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch all todos from the backend
+        fetch('/api/todos')
+            .then(response => response.json())
+            .then(todos => {
+                const todosBody = document.getElementById('todos-body');
+                todos.forEach(todo => {
+                    const row = `
+                        <tr>
+                            <td>${todo.id}</td>
+                            <td>${todo.title}</td>
+                            <td>${todo.description}</td>
+                        </tr>
+                    `;
+                    todosBody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => console.error('Error fetching todos:', error));
+    </script>
+</body>
+</html>
